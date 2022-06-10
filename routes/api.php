@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/transactions', [TransactionController::class, 'store']);
+Route::post('/transactions/{id}/capture', [TransactionController::class, 'captureAmount']);

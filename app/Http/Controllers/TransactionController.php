@@ -34,7 +34,7 @@ class TransactionController extends Controller
     {
         if ($request->payment_method != 'credit_card')
         {
-            return response()->json(['message' => 'No momento só aceitamos pagamentos via cartão de crédito']);
+            return response()->json(['Erro' => 'No momento só aceitamos pagamentos via cartão de crédito'], 406);
         }
 
         $first_six_number = substr($request->card_number, 0, 6);
@@ -69,7 +69,7 @@ class TransactionController extends Controller
         if($input == 0){
             // $transaction->delete($request->all()); Se caso precisasse que o registro fosse excluído
 
-            return response()->json(['message' => 'Não são aceitos cartões com o ultimo digito 0']);
+            return response()->json(['Erro' => 'Não são aceitos cartões com o ultimo digito 0'], 406);
         }
 
         if ($request->capture == false)
@@ -85,7 +85,7 @@ class TransactionController extends Controller
 
             // CreateTransactionCardJob::dispatch(); //falta fazer
 
-            return response()->json(['message' => 'Transação adcionada à fila!']);
+            return response()->json(['message' => 'Transação adcionada à fila!'], 200);
         }
 
         //modelando o response
@@ -110,6 +110,39 @@ class TransactionController extends Controller
             ]
         ];
 
-        return response()->json($array, 200);
+
+        return response()->json($transaction, 200);
+    }
+
+    public function captureAmount($id, Request $request)
+    {
+        try {
+
+            $data = Transaction::findOrFail($id);
+            $data->card;
+
+            $amountRequest = $request->amount / 100; //convertendo para reais
+
+            if ($amountRequest <= $data->amount && $data->status == Transaction::AUTHORIZED){
+
+                $data->update([
+                    'captured_amount' => $request->amount,
+                    'paid_amount' => $request->amount,
+                    'status' => Transaction::PAID,
+                ]);
+
+                $data->save();
+
+                return response()->json($data, 200);
+            }
+
+            return response()
+                    ->json(["message' => 'O valor da quantia deve ser igual ou inferior a $data->amount ou o status da transação deve ser Authorized", JSON_UNESCAPED_UNICODE]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(['Erro' => 'ID da transação não encotrado'], 404);
+
+        }
     }
 }
