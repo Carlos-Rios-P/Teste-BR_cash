@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionCardRequest;
 use App\Models\Card;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
