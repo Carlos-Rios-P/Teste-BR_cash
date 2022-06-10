@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Card;
 use App\Models\Transaction;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
