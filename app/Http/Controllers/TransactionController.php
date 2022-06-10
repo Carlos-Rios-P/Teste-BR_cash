@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionCardRequest;
 use App\Models\Card;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    public function getStatus(Request $request)
+    public function getStatus(TransactionCardRequest $request)
     {
         $last_number_card = substr($request->card_number, -1);
 
@@ -29,7 +30,7 @@ class TransactionController extends Controller
         return $status;
     }
 
-    public function store(Request $request)
+    public function store(TransactionCardRequest $request)
     {
         if ($request->payment_method != 'credit_card')
         {
