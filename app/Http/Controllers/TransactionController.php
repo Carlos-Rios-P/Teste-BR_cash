@@ -92,14 +92,14 @@ class TransactionController extends Controller
 
         $transaction->card;
 
-        //modelando response
-        unset($transaction['async'],
-            $transaction['capture']);
+        // //modelando response
+        // unset($transaction['async'],
+        //     $transaction['capture']);
 
-        unset($transaction->card['card_number'],
-            $transaction->card['card_cvv'],
-            $transaction->card['card_expiration_date'],
-            $transaction->card['transaction_id']);
+        // unset($transaction->card['card_number'],
+        //     $transaction->card['card_cvv'],
+        //     $transaction->card['card_expiration_date'],
+        //     $transaction->card['transaction_id']);
 
 
          return response()->json($transaction, 200);
