@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3f332dd445b11bb8fc7ecb26507608d",
+    "content-hash": "6307e12c18a88ac56f992a03cb48f9e6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -61,6 +61,51 @@
                 "source": "https://github.com/asm89/stack-cors/tree/v2.1.1"
             },
             "time": "2022-01-18T09:12:03+00:00"
+        },
+        {
+            "name": "axelrindle/larecipe-emojify",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/axelrindle/larecipe-emojify.git",
+                "reference": "3cdb3e82fa63ab006e76c222362f9d693726a2d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/axelrindle/larecipe-emojify/zipball/3cdb3e82fa63ab006e76c222362f9d693726a2d5",
+                "reference": "3cdb3e82fa63ab006e76c222362f9d693726a2d5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Axelrindle\\Emojify\\AssetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Axelrindle\\Emojify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Replaces emoji shortcodes with native unicode emojis.",
+            "keywords": [
+                "emoji",
+                "larecipe"
+            ],
+            "support": {
+                "issues": "https://github.com/axelrindle/larecipe-emojify/issues",
+                "source": "https://github.com/axelrindle/larecipe-emojify/tree/master"
+            },
+            "time": "2019-04-15T10:44:12+00:00"
         },
         {
             "name": "binarytorch/larecipe",
