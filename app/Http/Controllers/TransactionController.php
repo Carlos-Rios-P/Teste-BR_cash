@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionCardRequest;
+use App\Jobs\CreateCardJob;
 use App\Models\Card;
 use App\Models\Transaction;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -53,6 +55,13 @@ class TransactionController extends Controller
             'capture'           => $request->capture ?? true,
         ]);
 
+        if ($transaction->async == true)
+        {
+            CreateCardJob::dispatch($request);
+
+            return response()->json([$transaction,  ['message' => 'transação criada aguardando o cartão.']]);
+        }
+
         $card = Card::create([
             'card_number'           => $request->card_number,
             'card_expiration_date'  => $request->card_expiration_date,
@@ -66,12 +75,6 @@ class TransactionController extends Controller
         $input = $this->getStatus($request);
         $transaction->update(['status' => $input]);
 
-        if($input == 0){
-            // $transaction->delete($request->all()); Se caso precisasse que o registro fosse excluído
-
-            return response()->json(['Erro' => 'Não são aceitos cartões com o ultimo digito 0'], 406);
-        }
-
         if ($transaction->capture == false)
         {
             $transaction->update([
@@ -83,23 +86,16 @@ class TransactionController extends Controller
             $transaction->save();
         }
 
-        if ($transaction->async == true) {
-
-            // CreateTransactionCardJob::dispatch(); //falta fazer
-
-            return response()->json(['message' => 'Transação adcionada à fila!'], 200);
-        }
-
         $transaction->card;
 
-        // //modelando response
-        // unset($transaction['async'],
-        //     $transaction['capture']);
+        //modelando response
+        unset($transaction['async'],
+            $transaction['capture']);
 
-        // unset($transaction->card['card_number'],
-        //     $transaction->card['card_cvv'],
-        //     $transaction->card['card_expiration_date'],
-        //     $transaction->card['transaction_id']);
+        unset($transaction->card['card_number'],
+            $transaction->card['card_cvv'],
+            $transaction->card['card_expiration_date'],
+            $transaction->card['transaction_id']);
 
 
          return response()->json($transaction, 200);
