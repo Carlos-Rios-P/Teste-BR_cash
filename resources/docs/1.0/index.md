@@ -1,2 +1,3 @@
 - ## Documentação
+    - [Sobre os testes](/{{route}}/{{version}}/testes)
     - [teste BR_cash](/{{route}}/{{version}}/overview)
