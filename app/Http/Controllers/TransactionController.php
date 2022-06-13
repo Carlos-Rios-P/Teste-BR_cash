@@ -59,10 +59,10 @@ class TransactionController extends Controller
         {
             CreateCardJob::dispatch($request);
 
-            return response()->json([$transaction,  ['message' => 'transação criada aguardando o cartão.']]);
+            return response()->json(['message' => 'transação criada aguardando o cartão.']);
         }
 
-        $card = Card::create([
+        Card::create([
             'card_number'           => $request->card_number,
             'card_expiration_date'  => $request->card_expiration_date,
             'card_holder_name'      => $request->card_holder_name,
