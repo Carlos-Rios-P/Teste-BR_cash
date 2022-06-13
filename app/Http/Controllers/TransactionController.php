@@ -59,10 +59,10 @@ class TransactionController extends Controller
         {
             CreateCardJob::dispatch($request);
 
-            return response()->json([$transaction,  ['message' => 'transação criada aguardando o cartão.']]);
+            return response()->json(['message' => 'transação criada aguardando o cartão.']);
         }
 
-        $card = Card::create([
+        Card::create([
             'card_number'           => $request->card_number,
             'card_expiration_date'  => $request->card_expiration_date,
             'card_holder_name'      => $request->card_holder_name,
@@ -133,12 +133,54 @@ class TransactionController extends Controller
             }
 
             return response()
-                    ->json(["message' => 'O valor da quantia deve ser igual ou inferior a $data->amount e o status da transação deve ser Authorized"]);
+                    ->json(['message' => 'O valor da quantia deve ser igual ou inferior a $data->amount e o status da transação deve ser Authorized']);
 
         } catch (\Throwable $th) {
 
             return response()->json(['Erro' => 'ID da transação não encotrado'], 404);
 
         }
+    }
+
+    public function index()
+    {
+        $allTransactions = Transaction::with('card')->get();
+
+        return response()->json(['sucess' => $allTransactions], 200);
+    }
+
+    public function show($id)
+    {
+        try {
+
+            $transaction = Transaction::findOrFail($id);
+            $transaction->card;
+
+            return response()->json(['sucess' => $transaction], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['erro' => "Não foi possível encontrar a transação com o id $id"], 404);
+        }
+    }
+
+    public function update($id, Request $request)
+    {
+        //Função para se caso precisasse algum dado na transação, coloquei o installments como exemplo
+        try {
+            $transaction = Transaction::findOrFail($id);
+            $transaction->update([
+                'installments' => $request->installments
+            ]);
+
+            return response()->json(['sucess' => $transaction], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['erro' => "Não foi possível encontrar a transação com o id $id"], 404);
+        }
+    }
+
+    public function destroy($id)
+    {
+        Transaction::destroy($id);
+
+        return response()->json(['sucess' => 'Transação excluída com sucesso'], 200);
     }
 }
