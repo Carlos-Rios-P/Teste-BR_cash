@@ -19,5 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/transactions', [TransactionController::class, 'store']);
-Route::post('/transactions/{id}/capture', [TransactionController::class, 'captureAmount']);
+Route::prefix('/transactions')->group( function (){
+    Route::post('/', [TransactionController::class, 'store']);
+    Route::post('/{id}/capture', [TransactionController::class, 'captureAmount']);
+    Route::get('/index', [TransactionController::class, 'index']);
+    Route::get('/show/{id}', [TransactionController::class, 'show']);
+    Route::put('/update/{id}', [TransactionController::class, 'update']);
+    Route::delete('/delete/{id}', [TransactionController::class, 'destroy']);
+});
+
+

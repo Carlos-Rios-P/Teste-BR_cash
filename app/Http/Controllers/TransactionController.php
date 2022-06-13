@@ -141,4 +141,46 @@ class TransactionController extends Controller
 
         }
     }
+
+    public function index()
+    {
+        $allTransactions = Transaction::with('card')->get();
+
+        return response()->json(['sucess' => $allTransactions], 200);
+    }
+
+    public function show($id)
+    {
+        try {
+
+            $transaction = Transaction::findOrFail($id);
+            $transaction->card;
+
+            return response()->json(['sucess' => $transaction], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['erro' => "Não foi possível encontrar a transação com o id $id"], 404);
+        }
+    }
+
+    public function update($id, Request $request)
+    {
+        //Função para se caso precisasse algum dado na transação, coloquei o installments como exemplo
+        try {
+            $transaction = Transaction::findOrFail($id);
+            $transaction->update([
+                'installments' => $request->installments
+            ]);
+
+            return response()->json(['sucess' => $transaction], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['erro' => "Não foi possível encontrar a transação com o id $id"], 404);
+        }
+    }
+
+    public function destroy($id)
+    {
+        Transaction::destroy($id);
+
+        return response()->json(['sucess' => 'Transação excluída com sucesso'], 200);
+    }
 }
