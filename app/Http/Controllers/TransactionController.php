@@ -133,7 +133,7 @@ class TransactionController extends Controller
             }
 
             return response()
-                    ->json(["message' => 'O valor da quantia deve ser igual ou inferior a $data->amount e o status da transação deve ser Authorized"]);
+                    ->json(['message' => 'O valor da quantia deve ser igual ou inferior a $data->amount e o status da transação deve ser Authorized']);
 
         } catch (\Throwable $th) {
 
