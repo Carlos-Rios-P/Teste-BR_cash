@@ -1,7 +1,11 @@
 
-* [Function getStatus](#section-1)
-* [Function Store](#section-2)
-* [Function captureAmount](#section-3)
+* [GetStatus](#section-1)
+* [Store](#section-2)
+* [CaptureAmount](#section-3)
+* [Index](#section-4)
+* [Show](#section-5)
+* [Update](#section-6)
+* [Delete](#section-7)
 
 
 # Introdução
@@ -15,7 +19,7 @@
 
 <a name="section-1"></a>
 
-## Function getStatus
+## getStatus
 
 :small_blue_diamond: Essa função é chamada na `public function store` para definir o status da transação de acordo com a seguinte regra:
 <br> O status padrão da transação deve ser processing e após processar a transação o status irá mudar de acordo com o final do cartão: <br>
@@ -27,11 +31,11 @@ c. Se o final do cartão for 9 o status deve ser aleatório entre: authorized, p
 <a name="section-2"></a>
 
 
-## Function store
+## Store
 
 :small_blue_diamond: Para realizar a transação utilize a rota **`/api/transactions`** com o método **`POST`**. Segue o exemplo de dados enviados:
 
-<larecipe-badge type="Success">POST</larecipe-badge>
+<larecipe-badge type="primary">POST</larecipe-badge>
 
 ```http
 /api/transactions
@@ -127,11 +131,11 @@ ________________________________________________________________________________
 
 <a name="section-3"></a>
 
-## Function captureAmount
+## captureAmount
 
 :small_blue_diamond: Quando a transação criada na rota anterior receber `capture = false` a mesma transação deve ser executa na seguinte rota utilizando o seu id  `/api/transactions/:transaction_id/capture` com o método **`POST`**. Segue o exemplo de dados enviados:
 
-<larecipe-badge type="Success">POST</larecipe-badge>
+<larecipe-badge type="primary">POST</larecipe-badge>
 
 ```http
 /api/transactions/:transaction_id/capture
@@ -171,4 +175,163 @@ ________________________________________________________________________________
         "updated_at": "2022-06-10T23:48:28.000000Z"
     }
 }
+```
+
+<a name="section-4"></a>
+
+## Index
+
+Para retornar todas transaçãoes e seus respectivos cartões utilize a rota **`/api/transactions/index`** com o método **`GET`**. Segue o exemplo de dados enviados:
+
+<larecipe-badge type="primary">GET</larecipe-badge>
+
+```http
+/api/transactions/index
+```
+
+```javascript
+{
+    "sucess": [
+        {
+            "id": 2,
+            "installments": 12,
+            "amount": 10.25,
+            "captured_amount": 10.25,
+            "paid_amount": 10.25,
+            "ref_id": "d41d8cd98f00b204e9800998ecf8427e",
+            "status": 0,
+            "payment_method": "credit_card",
+            "async": 1,
+            "capture": 1,
+            "created_at": "2022-06-11T04:17:38.000000Z",
+            "updated_at": "2022-06-11T04:17:38.000000Z",
+            "card": null
+        },
+        {
+            "id": 3,
+            "installments": 12,
+            "amount": 10.25,
+            "captured_amount": 10.25,
+            "paid_amount": 10.25,
+            "ref_id": "d41d8cd98f00b204e9800998ecf8427e",
+            "status": 0,
+            "payment_method": "credit_card",
+            "async": 1,
+            "capture": 1,
+            "created_at": "2022-06-11T04:34:22.000000Z",
+            "updated_at": "2022-06-11T04:34:22.000000Z",
+            "card": null
+        },
+        {
+            "id": 4,
+            "installments": 12,
+            "amount": 10.25,
+            "captured_amount": 10.25,
+            "paid_amount": 10.25,
+            "ref_id": "d41d8cd98f00b204e9800998ecf8427e",
+            "status": 0,
+            "payment_method": "credit_card",
+            "async": 1,
+            "capture": 1,
+            "created_at": "2022-06-11T04:35:00.000000Z",
+            "updated_at": "2022-06-11T04:35:00.000000Z",
+            "card": null
+        },
+        {
+            "id": 9,
+            "installments": 12,
+            "amount": 10.25,
+            "captured_amount": 10.25,
+            "paid_amount": 10.25,
+            "ref_id": "d41d8cd98f00b204e9800998ecf8427e",
+            "status": 1,
+            "payment_method": "credit_card",
+            "async": 0,
+            "capture": 1,
+            "created_at": "2022-06-11T04:38:08.000000Z",
+            "updated_at": "2022-06-11T04:38:08.000000Z",
+            "card": {
+                "card_id": 1,
+                "card_number": "1234560000004441",
+                "card_expiration_date": "0722",
+                "card_holder_name": "Teste BR_cash",
+                "card_cvv": "123",
+                "card_first_digits": "123456",
+                "card_last_digits": "4441",
+                "transaction_id": 9,
+                "created_at": "2022-06-11T04:38:08.000000Z",
+                "updated_at": "2022-06-11T04:38:08.000000Z"
+            }
+        }
+]}
+```
+
+<a name="section-5"></a>
+
+## Show
+
+Para retornar apenas uma transação cujo id será indicado na rota e seu respectivo cartão utilize a rota **`/api/transactions/show/:id`** com o método **`GET`**. Segue o exemplo de dados enviados:<br>
+
+<larecipe-badge type="primary">GET</larecipe-badge>
+
+```http
+/api/transactions/show/:id
+```
+
+```javascript
+{
+    "sucess": [
+        {
+            "id": 9,
+            "installments": 12,
+            "amount": 10.25,
+            "captured_amount": 10.25,
+            "paid_amount": 10.25,
+            "ref_id": "d41d8cd98f00b204e9800998ecf8427e",
+            "status": 1,
+            "payment_method": "credit_card",
+            "async": 0,
+            "capture": 1,
+            "created_at": "2022-06-11T04:38:08.000000Z",
+            "updated_at": "2022-06-11T04:38:08.000000Z",
+            "card": {
+                "card_id": 1,
+                "card_number": "1234560000004441",
+                "card_expiration_date": "0722",
+                "card_holder_name": "Teste BR_cash",
+                "card_cvv": "123",
+                "card_first_digits": "123456",
+                "card_last_digits": "4441",
+                "transaction_id": 9,
+                "created_at": "2022-06-11T04:38:08.000000Z",
+                "updated_at": "2022-06-11T04:38:08.000000Z"
+            }
+        }
+]}
+```
+
+<a name="section-6"></a>
+
+
+## Update
+
+Para atualizar o campo `installments` de uma transação cujo o id será indicado na rota, utilize **`/api/transactions/update/:id`** com o método **`PUT`**.
+
+<larecipe-badge type="primary">PUT</larecipe-badge>
+
+```http
+/api/transactions/update/:id
+```
+
+<a name="section-7"></a>
+
+
+## Delete
+
+Para excluir transação cujo o id será indicado na rota, utilize **`/api/transactions/delete/:id`** com o método **`DELETE`**.
+
+<larecipe-badge type="primary">DELETE</larecipe-badge>
+
+```http
+/api/transactions/delete/:id
 ```
